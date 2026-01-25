@@ -112,11 +112,8 @@ importers:
         version: 4.0.0-beta.2
     devDependencies:
       '@applemusic-like-lyrics/lyric':
-        specifier: ^0.2.4
-        version: 0.2.4
-      '@applemusic-like-lyrics/ttml':
-        specifier: workspace:^
-        version: link:../ttml
+        specifier: ^0.3.0
+        version: 0.3.0
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.2.4
@@ -130,8 +127,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       lil-gui:
-        specifier: ^0.20.0
-        version: 0.20.0
+        specifier: ^0.21.0
+        version: 0.21.0
       stats.js:
         specifier: ^0.17.0
         version: 0.17.0
@@ -151,8 +148,8 @@ importers:
         specifier: 'catalog:'
         version: 4.5.4(@types/node@24.9.1)(rollup@4.52.5)(typescript@5.9.2)(vite@7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1))
       vite-plugin-glsl:
-        specifier: ^1.5.1
-        version: 1.5.1(rollup@4.52.5)(vite@7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1))
+        specifier: ^1.5.5
+        version: 1.5.5(@rollup/pluginutils@5.3.0(rollup@4.52.5))(esbuild@0.25.11)(vite@7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1))
       vite-plugin-top-level-await:
         specifier: ^1.6.0
         version: 1.6.0(@swc/helpers@0.5.17)(rollup@4.52.5)(vite@7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1))
@@ -655,8 +652,8 @@ packages:
     resolution: {integrity: sha512-2aDL3WUv8hMJb2L3r/PIQWsTLyq7RQr3v9xD16fiz6O8ys1xEyLhhTOv8gxtZvJiTzjTF5pHoArvRdesGL1DMQ==}
     hasBin: true
 
-  '@applemusic-like-lyrics/lyric@0.2.4':
-    resolution: {integrity: sha512-B1N7dMEwEIlgtyqLGVt7EbXJBQLCbv5J/N0YjkgWHu5qM1vMhKSGOXzrBuMDusmr4Z6tfO5iLfOYQUtoSXZyeg==}
+  '@applemusic-like-lyrics/lyric@0.3.0':
+    resolution: {integrity: sha512-ZGyBheZZfqjQmGnEUciNKCARwkqIP39ONZirJE+NOQjQ47TYlZz4tlLBRH/uRfq5qviYyJ1S9Q+pZxlYoyHWVw==}
 
   '@astrojs/compiler@2.12.2':
     resolution: {integrity: sha512-w2zfvhjNCkNMmMMOn5b0J8+OmUaBL1o40ipMvqcG6NRpdC+lKxmTi48DT8Xw0SzJ3AfmeFLB45zXZXtmbsjcgw==}
@@ -6340,8 +6337,8 @@ packages:
     resolution: {integrity: sha512-utfs7Pr5uJyyvDETitgsaqSyjCb2qNRAtuqUeWIAKztsOYdcACf2KtARYXg2pSvhkt+9NfoaNY7fxjl6nuMjIQ==}
     engines: {node: '>= 12.0.0'}
 
-  lil-gui@0.20.0:
-    resolution: {integrity: sha512-k7Ipr0ztqslMA2XvM5z5ZaWhxQtnEOwJBfI/hmSuRh6q4iMG9L0boqqrnZSzBR1jzyJ28OMl47l65ILzRe1TdA==}
+  lil-gui@0.21.0:
+    resolution: {integrity: sha512-tpvxN7v1GvE/Tv+GRopfOp0W7fVEjF4PltkuX8vOCIfim22rD1ztvfkoEMcv9lzQeuNUSeIrUmUjBwmlW/oUew==}
 
   lilconfig@3.1.3:
     resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
@@ -8617,11 +8614,18 @@ packages:
       vite:
         optional: true
 
-  vite-plugin-glsl@1.5.1:
-    resolution: {integrity: sha512-kFI8rUItruG2Dfltyhr6tP3jlgCBGda2TnIvUodBHbpdQ7KT0NWyKpS1EqV47DoAl4woKzer7GWd1fiEvzf4nQ==}
+  vite-plugin-glsl@1.5.5:
+    resolution: {integrity: sha512-6NM2P4JkM+1hNSqMhM4eagX03bmhEoTyrOrk68y3Q6KXfdF73QIuCb6BmRZvwLPgXTCOBM3Zc8gL1WxctYnrUQ==}
     engines: {node: '>= 20.17.0', npm: '>= 10.8.3'}
     peerDependencies:
+      '@rollup/pluginutils': ^5.x
+      esbuild: '>= 0.25'
       vite: '>= 3.x'
+    peerDependenciesMeta:
+      '@rollup/pluginutils':
+        optional: true
+      esbuild:
+        optional: true
 
   vite-plugin-i18next-loader@3.1.3:
     resolution: {integrity: sha512-RZCUkQYa9UUq7VlWWq24zqKTR7KjU5TY8ESwHlcfn89Tmbre5QH09DJxB6mFnEp32Y05lePNkzyFm+RSKBEErQ==}
@@ -9019,7 +9023,7 @@ snapshots:
 
   '@antfu/ni@0.21.12': {}
 
-  '@applemusic-like-lyrics/lyric@0.2.4': {}
+  '@applemusic-like-lyrics/lyric@0.3.0': {}
 
   '@astrojs/compiler@2.12.2': {}
 
@@ -15077,7 +15081,7 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.30.2
       lightningcss-win32-x64-msvc: 1.30.2
 
-  lil-gui@0.20.0: {}
+  lil-gui@0.21.0: {}
 
   lilconfig@3.1.3: {}
 
@@ -18054,12 +18058,12 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-plugin-glsl@1.5.1(rollup@4.52.5)(vite@7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1)):
+  vite-plugin-glsl@1.5.5(@rollup/pluginutils@5.3.0(rollup@4.52.5))(esbuild@0.25.11)(vite@7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1)):
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.52.5)
       vite: 7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1)
-    transitivePeerDependencies:
-      - rollup
+    optionalDependencies:
+      '@rollup/pluginutils': 5.3.0(rollup@4.52.5)
+      esbuild: 0.25.11
 
   vite-plugin-i18next-loader@3.1.3(vite@7.1.7(@types/node@24.9.1)(lightningcss@1.30.2)(sass@1.93.2)(yaml@2.8.1)):
     dependencies:
