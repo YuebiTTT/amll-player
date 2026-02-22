@@ -66,7 +66,7 @@ export abstract class AbstractBaseRenderer implements Disposable, HasElement {
 
 export abstract class BaseRenderer extends AbstractBaseRenderer {
 	private observer: ResizeObserver;
-	protected flowSpeed = 4;
+	protected flowSpeed = 1;
 	protected currerntRenderScale = 0.75;
 	constructor(protected canvas: HTMLCanvasElement) {
 		super();
