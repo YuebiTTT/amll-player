@@ -5,12 +5,12 @@ import type {
 	spring,
 } from "@applemusic-like-lyrics/core";
 import {
-	MaskObsceneWordsMode
+	LyricPlayer as DefaultLyricPlayer,
+	MaskObsceneWordsMode,
 } from "@applemusic-like-lyrics/core";
-import { LyricPlayer as DefaultLyricPlayer } from "@applemusic-like-lyrics/core";
 import {
-	type HTMLProps,
 	forwardRef,
+	type HTMLProps,
 	useEffect,
 	useImperativeHandle,
 	useLayoutEffect,
@@ -275,10 +275,10 @@ export const LyricPlayer = forwardRef<
 
 		useEffect(() => {
 			if (currentTime !== undefined) {
-				corePlayer?.setCurrentTime(currentTime);
+				corePlayer?.setCurrentTime(currentTime, isSeeking);
 				currentTimeRef.current = currentTime;
 			} else corePlayer?.setCurrentTime(0);
-		}, [corePlayer, currentTime]);
+		}, [corePlayer, currentTime, isSeeking]);
 
 		useEffect(() => {
 			corePlayer?.setIsSeeking(!!isSeeking);
@@ -302,7 +302,7 @@ export const LyricPlayer = forwardRef<
 			if (lineScaleSpringParams !== undefined)
 				corePlayer?.setLineScaleSpringParams(lineScaleSpringParams);
 		}, [corePlayer, lineScaleSpringParams]);
-		
+
 		useEffect(() => {
 			if (maskObsceneWordsMode !== undefined) {
 				corePlayer?.setMaskObsceneWords(maskObsceneWordsMode);
