@@ -1323,8 +1323,7 @@ dependencies = [
 [[package]]
 name = "ffmpeg-sys-next"
 version = "8.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a314bc0e022a33a99567ed4bd2576bd58ffd8fcff7891c29194cfecc26a62547"
+source = "git+https://github.com/apoint123/rust-ffmpeg-sys#24c7026243b5c5a07535f5cc47cde7dd0a0a7e38"
 dependencies = [
  "bindgen",
  "cc",
@@ -7595,8 +7594,3 @@ dependencies = [
  "syn 2.0.117",
  "winnow 0.7.15",
 ]
-
-[[patch.unused]]
-name = "ffmpeg-sys-next"
-version = "8.0.1"
-source = "git+https://github.com/apoint123/rust-ffmpeg-sys#628b2a78bab4c378ad0e32c9e1a710b872ced6b1"
