@@ -1035,7 +1035,7 @@ export abstract class LyricPlayerBase
 
 	update(delta = 0) {
 		this.bottomLine.update(delta / 1000);
-		this.interludeDots.update(delta / 1000);
+		this.interludeDots.update(delta);
 	}
 
 	protected onResize() {}
