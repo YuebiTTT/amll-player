@@ -7,8 +7,7 @@ use serde::*;
 use serde_json::Value;
 use tauri::{
     AppHandle, Manager, PhysicalSize, Runtime, Size, State, WebviewWindowBuilder, ipc::Channel,
-    path::BaseDirectory,
-    utils::config::WindowEffectsConfig, window::Effect,
+    path::BaseDirectory, utils::config::WindowEffectsConfig, window::Effect,
 };
 use tokio::sync::RwLock;
 use tracing::*;
@@ -124,7 +123,9 @@ async fn resolve_content_uri(
             let name = decoded.rsplit('/').next().unwrap_or(&decoded);
             name.rsplit('.').next().map(|e| e.to_lowercase())
         })
-        .filter(|e| ["mp3", "flac", "wav", "m4a", "aac", "ogg", "wma", "opus"].contains(&e.as_str()))
+        .filter(|e| {
+            ["mp3", "flac", "wav", "m4a", "aac", "ogg", "wma", "opus"].contains(&e.as_str())
+        })
         .unwrap_or_else(|| "audio".to_string());
 
     // Create a hash-based filename to avoid duplicates
@@ -156,12 +157,11 @@ async fn resolve_content_uri(
     let mut dst_file = std::fs::File::create(&target_path)
         .map_err(|e| format!("Failed to create cache file: {e}"))?;
 
-    std::io::copy(&mut src_file, &mut dst_file)
-        .map_err(|e| {
-            // Clean up partial file on failure
-            let _ = std::fs::remove_file(&target_path);
-            format!("Failed to copy file: {e}")
-        })?;
+    std::io::copy(&mut src_file, &mut dst_file).map_err(|e| {
+        // Clean up partial file on failure
+        let _ = std::fs::remove_file(&target_path);
+        format!("Failed to copy file: {e}")
+    })?;
 
     info!("Resolved content URI to: {}", target_path.display());
     Ok(target_path.to_string_lossy().into_owned())

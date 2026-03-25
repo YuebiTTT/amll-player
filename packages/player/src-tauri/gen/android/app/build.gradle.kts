@@ -16,7 +16,7 @@ val tauriProperties = Properties().apply {
 android {
     compileSdk = 36
     namespace = "net.stevexmh.amllplayer"
-    ndkVersion = "27.2.12479018" 
+    ndkVersion = "27.2.12479018"
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
         applicationId = "net.stevexmh.amllplayer"
@@ -31,7 +31,8 @@ android {
             isDebuggable = true
             isJniDebuggable = true
             isMinifyEnabled = false
-            packaging {                jniLibs.keepDebugSymbols.add("*/arm64-v8a/*.so")
+            packaging {
+                jniLibs.keepDebugSymbols.add("*/arm64-v8a/*.so")
                 jniLibs.keepDebugSymbols.add("*/armeabi-v7a/*.so")
                 jniLibs.keepDebugSymbols.add("*/x86/*.so")
                 jniLibs.keepDebugSymbols.add("*/x86_64/*.so")
@@ -63,39 +64,13 @@ rust {
 }
 
 dependencies {
-    implementation("androidx.webkit:webkit:1.14.0")
+    implementation("androidx.webkit:webkit:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.13.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 }
 
 apply(from = "tauri.build.gradle.kts")
 
-tasks.register<Copy>("copyCppSharedLib") {
-    val ndkDir = project.android.ndkDirectory.absolutePath
-
-    val abiMap = mapOf(
-        "arm64-v8a" to "aarch64-linux-android",
-        "armeabi-v7a" to "armv7a-linux-androideabi",
-        "x86" to "i686-linux-android",
-        "x86_64" to "x86_64-linux-android"
-    )
-
-    project.android.defaultConfig.ndk.abiFilters.forEach { abi ->
-        val toolchainAbi = abiMap[abi]
-        if (toolchainAbi != null) {
-            val sourcePath = "$ndkDir/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/$toolchainAbi/libc++_shared.so"
-            println("Copying $sourcePath for $abi")
-            from(sourcePath)
-            into("src/main/jniLibs/$abi")
-        }
-    }
-}
-
-tasks.whenTaskAdded {
-    if (name.startsWith("package")) {
-        dependsOn("copyCppSharedLib")
-    }
-}
