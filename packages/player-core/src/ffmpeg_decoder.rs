@@ -250,24 +250,36 @@ fn run_decoding_loop(
 ) {
     let mut player_scratch_buf = Vec::new();
     let mut fft_scratch_buf = Vec::new();
+    let mut is_eof_reached = false;
 
     'main_loop: loop {
-        if let Ok(msg) = control_rx.try_recv() {
-            match msg {
-                ControlMessage::Seek(pos) => {
-                    let seek_ts = (pos.as_secs_f64() * ffmpeg::ffi::AV_TIME_BASE as f64) as i64;
-                    if data.input_ctx.seek(seek_ts, ..).is_ok() {
-                        data.decoder.flush();
-                        let mut buffer = shared.buffer.lock();
-                        buffer.clear();
-                        shared.is_eof.store(false, Ordering::SeqCst);
-                        shared.condvar.notify_all();
-                    } else {
-                        error!("跳转失败");
+        if is_eof_reached {
+            match control_rx.recv() {
+                Ok(ControlMessage::Seek(pos)) => {
+                    if execute_seek(data, &shared, pos) {
+                        is_eof_reached = false;
                     }
                     continue 'main_loop;
                 }
+                Err(_) => {
+                    break 'main_loop;
+                }
             }
+        } else {
+            match control_rx.try_recv() {
+                Ok(ControlMessage::Seek(pos)) => {
+                    execute_seek(data, &shared, pos);
+                    continue 'main_loop;
+                }
+                Err(mpsc::TryRecvError::Empty) => {}
+                Err(mpsc::TryRecvError::Disconnected) => {
+                    break 'main_loop;
+                }
+            }
+        }
+
+        if shared.is_stopping.load(Ordering::Acquire) {
+            break 'main_loop;
         }
 
         {
@@ -289,7 +301,8 @@ fn run_decoding_loop(
             Err(ffmpeg::Error::Eof) => {
                 shared.is_eof.store(true, Ordering::Release);
                 shared.condvar.notify_all();
-                break 'main_loop;
+                is_eof_reached = true;
+                continue 'main_loop;
             }
             Err(ffmpeg::Error::Other {
                 errno: ffmpeg::ffi::EAGAIN,
@@ -336,6 +349,21 @@ fn run_decoding_loop(
     }
     shared.is_eof.store(true, Ordering::Release);
     shared.condvar.notify_all();
+}
+
+fn execute_seek(data: &mut DecoderInitData, shared: &Arc<Shared>, pos: Duration) -> bool {
+    let seek_ts = (pos.as_secs_f64() * ffmpeg::ffi::AV_TIME_BASE as f64) as i64;
+    if data.input_ctx.seek(seek_ts, ..).is_ok() {
+        data.decoder.flush();
+        let mut buffer = shared.buffer.lock();
+        buffer.clear();
+        shared.is_eof.store(false, Ordering::SeqCst);
+        shared.condvar.notify_all();
+        true
+    } else {
+        error!("跳转失败");
+        false
+    }
 }
 
 fn try_resample_with_retry(
