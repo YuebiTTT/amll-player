@@ -805,7 +805,9 @@ export abstract class LyricPlayerBase
 		const prevLine = this.processedLines[currentIndex - 1];
 
 		if (currentLine && prevLine) {
-			const interval = currentLine.startTime - prevLine.endTime;
+			const interval =
+				currentLine.startTime -
+				(prevLine?.words[0]?.startTime ?? prevLine.startTime);
 
 			const MIN_INTERVAL = 100;
 			const MAX_INTERVAL = 800;
@@ -814,8 +816,8 @@ export abstract class LyricPlayerBase
 				Math.min(MAX_INTERVAL, interval),
 			);
 
-			const MAX_STIFFNESS = 170;
-			const MIN_STIFFNESS = 130;
+			const MAX_STIFFNESS = 220;
+			const MIN_STIFFNESS = 170;
 
 			let ratio =
 				1 - (clampedInterval - MIN_INTERVAL) / (MAX_INTERVAL - MIN_INTERVAL);
