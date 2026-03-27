@@ -2,11 +2,11 @@ name: 构建 AMLL Player Tauri 多端版本
 on:
   push:
     branches:
-      - full-refractor
+      - main
       - dev
     paths-ignore:
-      - '**/*.md'
-      - 'packages/docs/**'
+      - "**/*.md"
+      - "packages/docs/**"
   workflow_dispatch:
 
 permissions:
