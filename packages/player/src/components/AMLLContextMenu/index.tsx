@@ -41,6 +41,12 @@ export const AMLLContextMenuContent: FC = () => {
 				onClick={async () => {
 					const win = getCurrentWindow();
 					const isFullscreen = await win.isFullscreen();
+					if (!isFullscreen) {
+						// 如果要进入全屏，先检查是否处于最大化状态
+						if (await win.isMaximized()) {
+							await win.unmaximize();
+						}
+					}
 					setSystemTitlebarFullscreen(!isFullscreen);
 					await win.setFullscreen(!isFullscreen);
 				}}
