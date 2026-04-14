@@ -204,14 +204,9 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         with:
           projectPath: packages/player
-          args: ${{ matrix.args }}
+          args: ${{ matrix.args }} --skip-signing
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # 只有当提供了签名密钥时才进行签名
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-          # 当签名密钥不存在时，跳过签名步骤
-          TAURI_SKIP_SIGNING: ${{ !secrets.TAURI_SIGNING_PRIVATE_KEY }}
 
       - name: 上传产物到 Action Artifact
         uses: actions/upload-artifact@v4
