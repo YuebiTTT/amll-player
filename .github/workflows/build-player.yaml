@@ -205,8 +205,6 @@ jobs:
         with:
           projectPath: packages/player
           args: ${{ matrix.args }} --skip-signing
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 上传产物到 Action Artifact
         uses: actions/upload-artifact@v4
